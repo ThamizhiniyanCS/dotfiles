@@ -16,6 +16,7 @@ return {
       "markdown-toc",
       "markdownlint-cli2",
       "marksman",
+      "prettier",
       "pyright",
       "ruff",
       "rust-analyzer",

@@ -18,3 +18,7 @@ fish_add_path -g -p ~/development/flutter/bin
 
 # 7z binaries path
 fish_add_path -g -p /opt/7z
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
