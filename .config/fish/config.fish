@@ -25,3 +25,6 @@ set --export PATH $BUN_INSTALL/bin $PATH
 
 # Zoxide: https://github.com/ajeetdsouza/zoxide
 zoxide init fish | source
+
+# Yazi
+set --export EDITOR nvim
