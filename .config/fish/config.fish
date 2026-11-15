@@ -1,32 +1,47 @@
-export PATH="$HOME/.local/bin:$PATH"
+set -gx PATH $HOME/.local/bin $PATH
+set -gx BUN_INSTALL $HOME/.bun
+set -gx PATH $BUN_INSTALL/bin $PATH
+set -gx FZF_ALT_C_COMMAND 'fd --type d --exclude .git --follow --hidden'
+set -gx FZF_DEFAULT_COMMAND 'fd --type f --exclude .git --follow --hidden'
+set -gx FZF_DEFAULT_OPTS '--preview=\'bat --color=always -n {}\' --bind \'ctrl-/:toggle-preview\' --color bg:#282a36,bg+:#44475a,fg:#f8f8f2,fg+:#f8f8f2,header:#6272a4,hl:#bd93f9,hl+:#bd93f9,info:#ffb86c,marker:#ff79c6,pointer:#ff79c6,prompt:#50fa7b,spinner:#ffb86c'
 
-# Yazi
-set --export EDITOR nvim
+status is-login; and begin
+    set -gx NIX_PATH nixpkgs=channel:nixos-unstable
+    set -gx NIX_LOG info
+    set -gx TERMINAL kitty
+    set -gx EDITOR nvim
 
-# Bun Config
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+    if test (tty) = /dev/tty1
+        exec start-hyprland >/dev/null 2>&1
+    end
+end
 
-if status is-interactive
-    # Commands to run in interactive sessions can go here
+set -gx LIBVIRT_DEFAULT_URI qemu:///system
+
+status is-interactive; and begin
+    # Navigation
+    abbr --add .. 'cd ..'
+    abbr --add ... 'cd ../..'
+
+    # Files
+    alias ls 'eza -lh --group-directories-first --icons=auto'
+    alias la 'ls -a'
+    alias ll 'eza -l --icons=auto'
+    alias lla 'll -a'
+    alias lt 'eza --tree --level=2 --long --icons=auto --git'
+    alias lta 'lt -a'
+
+    # Git
+    alias g git
+    alias gcm 'git commit -m'
+    alias gcam 'git commit -a -m'
+    alias gcad 'git commit -a --amend'
+
+    # Clipboard
+    alias c 'xclip -selection clipboard'
+
+    # Shell integrations
+    fzf --fish | source
     starship init fish | source
     zoxide init fish | source
 end
-
-# Added by Antigravity CLI installer
-set -gx PATH "$HOME/.local/bin" $PATH
-
-# Added by LM Studio CLI (lms)
-set -gx PATH $PATH "$HOME/.lmstudio/bin"
-# End of LM Studio CLI section
-
-# Nvidia Cuda Post Installation Actions
-# https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#post-installation-actions
-set -gx PATH $PATH "/usr/local/cuda-13.3/bin"
-set -gx LD_LIBRARY_PATH $LD_LIBRARY_PATH "/usr/local/cuda-13.3/lib64"
-
-# LibVirt Default URI
-set -gx LIBVIRT_DEFAULT_URI "qemu:///system"
-
-# Cameradar
-set -gx PATH $PATH "$HOME/go/bin/"
